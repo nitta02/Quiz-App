@@ -7,13 +7,16 @@ import 'package:flutter/material.dart';
 class GamePageProvider extends ChangeNotifier {
   final Dio _dio = Dio();
   final int maxQuestion = 10;
+  List? questions;
   BuildContext context;
+  int currentQuestionIndex = 0;
+
   GamePageProvider({
     required this.context,
   }) {
     _dio.options.baseUrl = 'https://opentdb.com/api.php';
     getQuestionfromAPI();
-    print('object');
+    // print('object');
   }
 
   Future<void> getQuestionfromAPI() async {
@@ -24,5 +27,19 @@ class GamePageProvider extends ChangeNotifier {
     });
     var data = json.decode(response.toString());
     print(data);
+    questions = data["results"];
+    notifyListeners();
+  }
+
+  String getQuestion() {
+    return questions![currentQuestionIndex]["question"];
+  }
+
+  void anserQuestion(String answer) async {
+    bool isCorrect =
+        questions![currentQuestionIndex]["correct_answer"] == answer;
+    print(isCorrect ? 'Correct' : "Incorrect");
+    currentQuestionIndex++;
+    notifyListeners();
   }
 }

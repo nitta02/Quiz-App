@@ -22,13 +22,19 @@ class GamePage extends StatelessWidget {
   Widget buildUI() {
     return Builder(builder: (context) {
       _pageProvider = context.watch<GamePageProvider>();
-      return Scaffold(
-        body: SafeArea(
-            child: Container(
-          padding: EdgeInsets.symmetric(horizontal: _customHeight! * 0.05),
-          child: gameUI(),
-        )),
-      );
+      if (_pageProvider!.questions != null) {
+        return Scaffold(
+          body: SafeArea(
+              child: Container(
+            padding: EdgeInsets.symmetric(horizontal: _customHeight! * 0.05),
+            child: gameUI(),
+          )),
+        );
+      } else {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
     });
   }
 
@@ -53,9 +59,9 @@ class GamePage extends StatelessWidget {
   }
 
   Widget questionText() {
-    return const Text(
-      'Question 1',
-      style: TextStyle(
+    return Text(
+      _pageProvider!.getQuestion(),
+      style: const TextStyle(
         fontSize: 25,
         fontWeight: FontWeight.w400,
         color: Colors.white,
@@ -66,11 +72,13 @@ class GamePage extends StatelessWidget {
   //-----------------------------Select Button
   Widget selectTRUEButton() {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () {
+        _pageProvider?.anserQuestion('True');
+      },
       color: Colors.green,
       height: _customHeight! * 0.08,
       minWidth: _customWidth! * 85,
-      child: Text(
+      child: const Text(
         'True',
         style: TextStyle(
           color: Colors.white,
@@ -82,11 +90,13 @@ class GamePage extends StatelessWidget {
 
   Widget selectFALSEButton() {
     return MaterialButton(
-      onPressed: () {},
+      onPressed: () {
+        _pageProvider?.anserQuestion('False');
+      },
       color: Colors.red,
       height: _customHeight! * 0.08,
       minWidth: _customWidth! * 85,
-      child: Text(
+      child: const Text(
         'False',
         style: TextStyle(
           color: Colors.white,
