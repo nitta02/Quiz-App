@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -10,6 +10,7 @@ class GamePageProvider extends ChangeNotifier {
   List? questions;
   BuildContext context;
   int currentQuestionIndex = 0;
+  int correctanswerCount = 0;
 
   GamePageProvider({
     required this.context,
@@ -38,8 +39,53 @@ class GamePageProvider extends ChangeNotifier {
   void anserQuestion(String answer) async {
     bool isCorrect =
         questions![currentQuestionIndex]["correct_answer"] == answer;
-    print(isCorrect ? 'Correct' : "Incorrect");
+    correctanswerCount += isCorrect ? 1 : 0;
+
     currentQuestionIndex++;
-    notifyListeners();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: isCorrect ? Colors.green : Colors.red,
+          title: Icon(
+            isCorrect ? Icons.check_circle : Icons.cancel_sharp,
+            color: Colors.white,
+          ),
+        );
+      },
+    );
+    await Future.delayed(const Duration(
+      seconds: 1,
+    ));
+    Navigator.pop(context);
+    if (currentQuestionIndex == maxQuestion) {
+      finishQuestion();
+    } else {
+      notifyListeners();
+    }
+  }
+
+  Future<void> finishQuestion() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.yellow,
+          title: const Text(
+            'Finish',
+            style: TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: 25,
+            ),
+          ),
+          content: Text('Score : $correctanswerCount/$maxQuestion'),
+        );
+      },
+    );
+    await Future.delayed(const Duration(
+      seconds: 2,
+    ));
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 }
