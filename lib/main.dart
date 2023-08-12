@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fravia_app/pages/game_page.dart';
+import 'package:fravia_app/pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromARGB(255, 109, 109, 104),
         useMaterial3: true,
       ),
-      home: GamePage(),
+      home: HomePage(),
     );
   }
 }
