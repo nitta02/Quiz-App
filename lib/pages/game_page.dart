@@ -7,14 +7,21 @@ import 'package:provider/provider.dart';
 class GamePage extends StatelessWidget {
   double? _customHeight, _customWidth;
   GamePageProvider? _pageProvider;
-  GamePage({super.key});
+  GamePage({
+    super.key,
+    required this.difficultyLevel,
+  });
+  final difficultyLevel;
 
   @override
   Widget build(BuildContext context) {
     _customHeight = MediaQuery.of(context).size.height;
     _customWidth = MediaQuery.of(context).size.width;
     return ChangeNotifierProvider(
-      create: (context) => GamePageProvider(context: context),
+      create: (context) => GamePageProvider(
+        context: context,
+        difficultyLevel: difficultyLevel,
+      ),
       child: buildUI(),
     );
   }
