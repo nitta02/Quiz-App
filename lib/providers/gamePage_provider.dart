@@ -11,8 +11,10 @@ class GamePageProvider extends ChangeNotifier {
   BuildContext context;
   int currentQuestionIndex = 0;
   int correctanswerCount = 0;
+  final difficultyLevel;
 
   GamePageProvider({
+    required this.difficultyLevel,
     required this.context,
   }) {
     _dio.options.baseUrl = 'https://opentdb.com/api.php';
@@ -24,10 +26,11 @@ class GamePageProvider extends ChangeNotifier {
     var response = await _dio.get('', queryParameters: {
       "amount": maxQuestion,
       "type": "boolean",
-      "difficulty": "easy"
+      "difficulty": difficultyLevel,
     });
+    print(difficultyLevel);
     var data = json.decode(response.toString());
-    print(data);
+    // print(data);
     questions = data["results"];
     notifyListeners();
   }
