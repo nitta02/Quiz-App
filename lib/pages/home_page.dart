@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fravia_app/pages/game_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,6 +10,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double? _customHeight, _customWidth;
+
   @override
   Widget build(BuildContext context) {
     _customHeight = MediaQuery.of(context).size.height;
@@ -24,6 +26,23 @@ class _HomePageState extends State<HomePage> {
             mainAxisSize: MainAxisSize.max,
             children: [
               appTitle(),
+              MaterialButton(
+                color: Colors.grey,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GamePage(),
+                      ));
+                },
+                child: const Text(
+                  'Start Now',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              )
             ],
           )),
         ),
